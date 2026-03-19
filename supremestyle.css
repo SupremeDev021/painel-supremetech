@@ -1,0 +1,50 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-color: #1f2937;
+    --sidebar-bg: #1e293b;
+    --danger: #ef4444;
+    --success: #10b981;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* --- TELA DE LOGIN --- */
+#login-screen { display: flex; height: 100vh; justify-content: center; align-items: center; background: var(--primary); }
+.login-box { background: var(--card-bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 350px; text-align: center; }
+.login-box h2 { color: var(--primary); margin-top: 0; }
+.form-control { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+.btn:hover { background: var(--primary-hover); }
+.error-msg { color: var(--danger); font-size: 14px; display: none; margin-bottom: 10px; }
+
+/* --- DASHBOARD --- */
+#dashboard { display: none; height: 100vh; }
+
+.sidebar { width: 260px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; }
+.logo-area { padding: 20px; text-align: center; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #334155; }
+.menu-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #334155; transition: 0.2s; display: none; }
+.menu-item:hover, .menu-item.active { background: var(--primary); }
+.menu-item.visible { display: block; }
+
+.main-content { flex: 1; padding: 30px; overflow-y: auto; }
+.header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.header-dash h1 { margin: 0; font-size: 1.8rem; }
+.btn-logout { background: var(--danger); width: auto; }
+
+/* --- SEÇÕES E FORMULÁRIOS --- */
+.section-panel { display: none; background: var(--card-bg); padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+.section-panel.active { display: block; }
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+.input-group input, .input-group textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
+.input-group textarea { resize: vertical; height: 100px; }
+.btn-save { width: auto; margin-top: 10px; }
+.aviso-sucesso { display: none; background: var(--success); color: white; padding: 12px; border-radius: 4px; margin-top: 15px; text-align: center; font-weight: bold; }

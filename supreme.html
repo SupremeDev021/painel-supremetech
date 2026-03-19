@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente | Supreme-Tech</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>Supreme-Tech</h2>
+            <p>Acesse o seu painel</p>
+            <div class="error-msg" id="login-error">Credenciais inválidas!</div>
+            <form id="login-form">
+                <input type="email" id="email" class="form-control" placeholder="E-mail da Empresa" required>
+                <input type="password" id="senha" class="form-control" placeholder="Senha" required>
+                <button type="submit" class="btn">Acessar Painel</button>
+            </form>
+            <p style="font-size: 12px; margin-top: 15px; color: #666;">Teste com <b>clinica@teste.com</b> ou <b>lanche@teste.com</b> (senha: 123)</p>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <div class="sidebar">
+            <div class="logo-area">Supreme-Tech</div>
+            <div class="menu-item visible active" onclick="navegar('sec-textos', this)" data-menu="todos">📝 Textos do Robô</div>
+            <div class="menu-item" onclick="navegar('sec-horarios', this)" data-menu="clinica,loja,petshop">🕒 Horários</div>
+            <div class="menu-item" onclick="navegar('sec-cardapio', this)" data-menu="restaurante">🍔 Cardápio & Combos</div>
+            <div class="menu-item" onclick="navegar('sec-servicos', this)" data-menu="clinica,petshop">🩺 Serviços e Valores</div>
+            <div class="menu-item" onclick="navegar('sec-loja', this)" data-menu="loja">🛍️ Catálogo da Loja</div>
+        </div>
+
+        <div class="main-content">
+            <div class="header-dash">
+                <h1 id="nome-empresa">Carregando...</h1>
+                <button class="btn btn-logout" onclick="fazerLogout()">Sair</button>
+            </div>
+
+            <div id="sec-textos" class="section-panel active">
+                <h2>Mensagens do Robô</h2>
+                <form onsubmit="salvarConfiguracoes(event, 'form-textos')">
+                    <div class="input-group"><label>Mensagem de Saudação</label><textarea name="msg_saudacao"></textarea></div>
+                    <div class="input-group"><label>Mensagem de Fora do Horário</label><textarea name="msg_fechado"></textarea></div>
+                    <button type="submit" class="btn btn-save">Salvar Mensagens</button>
+                    <div class="aviso-sucesso">✅ Mensagens atualizadas no servidor!</div>
+                </form>
+            </div>
+
+            <div id="sec-horarios" class="section-panel">
+                <h2>Horários de Funcionamento</h2>
+                <form onsubmit="salvarConfiguracoes(event, 'form-horarios')">
+                    <div class="input-group"><label>Abertura</label><input type="time" name="horario_abertura"></div>
+                    <div class="input-group"><label>Fechamento</label><input type="time" name="horario_fechamento"></div>
+                    <button type="submit" class="btn btn-save">Salvar Horários</button>
+                    <div class="aviso-sucesso">✅ Horários atualizados com sucesso!</div>
+                </form>
+            </div>
+
+            <div id="sec-cardapio" class="section-panel">
+                <h2>Cardápio e Preços</h2>
+                <form onsubmit="salvarConfiguracoes(event, 'form-cardapio')">
+                    <div class="input-group"><label>Preço Combo 1 (R$)</label><input type="number" step="0.01" name="preco_combo1"></div>
+                    <div class="input-group"><label>Taxa de Entrega Fixa (R$)</label><input type="number" step="0.01" name="taxa_entrega"></div>
+                    <button type="submit" class="btn btn-save">Atualizar Cardápio</button>
+                    <div class="aviso-sucesso">✅ O robô já está cobrando os novos valores!</div>
+                </form>
+            </div>
+
+            <div id="sec-servicos" class="section-panel">
+                <h2>Tabela de Serviços</h2>
+                <form onsubmit="salvarConfiguracoes(event, 'form-servicos')">
+                    <div class="input-group"><label>Valor da Consulta (R$)</label><input type="number" step="0.01" name="preco_consulta"></div>
+                    <div class="input-group" id="bloco-banho" style="display:none;"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="preco_banho"></div>
+                    <button type="submit" class="btn btn-save">Atualizar Valores</button>
+                    <div class="aviso-sucesso">✅ Tabela de preços atualizada!</div>
+                </form>
+            </div>
+
+            <div id="sec-loja" class="section-panel">
+                <h2>Integração da Loja</h2>
+                <form onsubmit="salvarConfiguracoes(event, 'form-loja')">
+                    <div class="input-group"><label>Link do Catálogo (PDF ou Site)</label><input type="url" name="link_catalogo"></div>
+                    <div class="input-group"><label>Chave PIX de Recebimento</label><input type="text" name="chave_pix"></div>
+                    <button type="submit" class="btn btn-save">Atualizar Loja</button>
+                    <div class="aviso-sucesso">✅ Informações de pagamento atualizadas!</div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
