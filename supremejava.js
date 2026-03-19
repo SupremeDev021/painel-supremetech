@@ -1,19 +1,23 @@
+const URL_WEBHOOK_N8N = "https://seu-n8n.com/webhook/atualizar-configs";
+const NUMERO_WHATSAPP_SUPORTE = "5521999999999"; 
+
 let clienteLogado = null;
 
-// EVENTO DE LOGIN (Simulando o Banco de Dados)
+// EVENTO DE LOGIN 
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('email').value;
     
     let simulaRespostaBanco = null;
 
-    // Repare no "plano" que adicionamos no banco de dados
     if(email === "clinica@teste.com") {
-        simulaRespostaBanco = { id: 1, nome: "Clínica Vida", segmento: "clinica", plano: "supreme", token: "abc123token" };
-    } else if (email === "lanche@teste.com") {
-        simulaRespostaBanco = { id: 2, nome: "Burger Zé", segmento: "restaurante", plano: "start", token: "xyz890token" };
+        simulaRespostaBanco = { id: 1, nome: "Clínica Saúde Total", segmento: "clinica", plano: "supreme super" };
+    } else if (email === "restaurante@teste.com") {
+        simulaRespostaBanco = { id: 2, nome: "Burger Prime", segmento: "restaurante", plano: "supreme basic" };
     } else if (email === "loja@teste.com") {
-        simulaRespostaBanco = { id: 4, nome: "Loja Tech", segmento: "loja", plano: "elite", token: "loja789token" };
+        simulaRespostaBanco = { id: 4, nome: "Tech Store", segmento: "loja", plano: "supreme elite" };
+    } else {
+        simulaRespostaBanco = { id: 3, nome: "Pet Gold", segmento: "petshop", plano: "supreme basic" };
     }
 
     if (simulaRespostaBanco) {
@@ -24,7 +28,6 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     }
 });
 
-// MONTA O PAINEL DE ACORDO COM O SEGMENTO E PLANO
 function iniciarSessao(dadosCliente) {
     clienteLogado = dadosCliente;
     
@@ -33,7 +36,6 @@ function iniciarSessao(dadosCliente) {
     document.getElementById('nome-empresa').innerText = clienteLogado.nome;
     document.getElementById('badge-plano').innerText = "Plano " + clienteLogado.plano.toUpperCase();
 
-    // 1. Filtra as abas laterais por Segmento
     const menus = document.querySelectorAll('.menu-item');
     menus.forEach(menu => {
         const permitidos = menu.getAttribute('data-menu').split(',');
@@ -44,15 +46,7 @@ function iniciarSessao(dadosCliente) {
         }
     });
 
-    // Ajuste fino para Pet Shop
-    if (clienteLogado.segmento === 'petshop') {
-        document.getElementById('bloco-banho').style.display = 'block';
-    } else {
-        document.getElementById('bloco-banho').style.display = 'none';
-    }
-
-    // 2. Trava ou Libera o Dashboard com base no Plano
-    if (clienteLogado.plano === 'elite') {
+    if (clienteLogado.plano === 'supreme elite') {
         document.getElementById('dash-bloqueado').style.display = 'none';
         document.getElementById('dash-liberado').style.display = 'block';
     } else {
@@ -60,11 +54,9 @@ function iniciarSessao(dadosCliente) {
         document.getElementById('dash-liberado').style.display = 'none';
     }
 
-    // Volta sempre para a primeira aba (Dashboard)
     navegar('sec-dashboard', document.querySelector('.menu-item.visible'));
 }
 
-// NAVEGAÇÃO ENTRE AS ABAS
 function navegar(idSecao, elementoMenu) {
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
     if(elementoMenu) elementoMenu.classList.add('active');
@@ -73,7 +65,6 @@ function navegar(idSecao, elementoMenu) {
     document.getElementById(idSecao).classList.add('active');
 }
 
-// LOGOUT
 function fazerLogout() {
     clienteLogado = null;
     document.getElementById('dashboard').style.display = 'none';
@@ -81,16 +72,29 @@ function fazerLogout() {
     document.getElementById('login-form').reset();
 }
 
-// ENVIO DE DADOS (CONFIGURAÇÕES) PARA O N8N
-function salvarConfiguracoes(event, formId) {
+function abrirWhatsAppSuporte() {
+    const texto = encodeURIComponent(`Olá, equipe Supreme-Tech! Sou da empresa *${clienteLogado.nome}* e preciso de ajuda no meu painel.`);
+    window.open(`https://wa.me/${NUMERO_WHATSAPP_SUPORTE}?text=${texto}`, '_blank');
+}
+
+// ENVIO DE DADOS - INCLUINDO O TOGGLE "DESATIVAR BOT"
+function salvarConfiguracoes(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
     
+    let dadosFormulario = Object.fromEntries(formData.entries());
+    
+    // Verifica se o formulário atual possui o botão de desativar (checkbox)
+    const toggleBot = form.querySelector('#toggle-bot');
+    if (toggleBot) {
+        dadosFormulario['bot_desativado'] = toggleBot.checked ? "SIM" : "NAO";
+    }
+
     const payload = {
         cliente_id: clienteLogado.id,
         acao: "salvar_configuracoes",
-        dados: Object.fromEntries(formData.entries())
+        dados: dadosFormulario
     };
 
     console.log("Enviando Configuração para o n8n:", JSON.stringify(payload));
@@ -100,7 +104,6 @@ function salvarConfiguracoes(event, formId) {
     setTimeout(() => { aviso.style.display = 'none'; }, 4000);
 }
 
-// ENVIO DE DADOS (SUPORTE) PARA O N8N
 function enviarContato(event) {
     event.preventDefault();
     const form = event.target;
@@ -108,21 +111,15 @@ function enviarContato(event) {
 
     const payload = {
         cliente_id: clienteLogado.id,
-        acao: "abrir_ticket_suporte",
+        acao: "abrir_ticket",
         assunto: formData.get('assunto'),
         mensagem: formData.get('mensagem_suporte')
     };
 
-    console.log("Enviando Pedido de Suporte para o n8n:", JSON.stringify(payload));
+    console.log("Ticket enviado:", JSON.stringify(payload));
 
     const aviso = form.querySelector('.aviso-sucesso');
     aviso.style.display = 'block';
-    form.reset(); // Limpa o formulário após enviar
+    form.reset(); 
     setTimeout(() => { aviso.style.display = 'none'; }, 4000);
-}
-
-// BOTÃO DE UPSELL
-function solicitarUpgrade() {
-    alert("Iniciando contato com a Supreme-Tech para upgrade do Plano " + clienteLogado.plano.toUpperCase() + " para o ELITE 360. Entraremos em contato via WhatsApp!");
-    // Aqui você também pode fazer um fetch para o n8n avisando você, dono da Supreme-Tech, que o cliente quer comprar o plano mais caro!
 }
