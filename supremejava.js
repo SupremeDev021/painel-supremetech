@@ -123,3 +123,95 @@ function enviarContato(event) {
     form.reset(); 
     setTimeout(() => { aviso.style.display = 'none'; }, 4000);
 }
+// === MOTOR DO CATÁLOGO DINÂMICO ===
+
+// 1. Cria o bloco de uma nova Categoria (Ex: "Bebidas" ou "Exames")
+function adicionarCategoria(botao) {
+    const wrapper = botao.parentElement.nextElementSibling; // Pega a div .categorias-wrapper
+    const div = document.createElement('div');
+    div.className = 'categoria-block';
+    
+    div.innerHTML = `
+        <div class="categoria-topo">
+            <input type="text" placeholder="Nome da Categoria (Ex: Hamburguers, Exames...)" class="cat-nome" required>
+            <button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()" title="Excluir Categoria">🗑️</button>
+        </div>
+        <div class="itens-wrapper">
+            </div>
+        <button type="button" class="btn-add-item" onclick="adicionarItem(this)">+ Adicionar Item</button>
+    `;
+    
+    wrapper.appendChild(div);
+    // Já adiciona uma linha de item em branco para facilitar para o cliente
+    adicionarItem(div.querySelector('.btn-add-item'));
+}
+
+// 2. Cria a linha com Nome e Preço (Ex: "Coca-Cola" - "8.00")
+function adicionarItem(botao) {
+    const wrapper = botao.previousElementSibling; // Pega a div .itens-wrapper
+    const div = document.createElement('div');
+    div.className = 'item-row';
+    
+    div.innerHTML = `
+        <input type="text" placeholder="Nome do Item" class="item-nome" required>
+        <input type="text" placeholder="R$ 0,00" class="item-preco" required>
+        <button type="button" class="btn-remove" onclick="this.parentElement.remove()" title="Excluir Item">✖</button>
+    `;
+    
+    wrapper.appendChild(div);
+}
+// ENVIO DE DADOS (CONFIGURAÇÕES GERAIS E CATÁLOGO)
+function salvarConfiguracoes(event) {
+    event.preventDefault();
+    const form = event.target;
+    
+    // --- MAGIA DO CATÁLOGO: Transforma as linhas em um pacote JSON ---
+    const wrapperCategorias = form.querySelector('.categorias-wrapper');
+    if (wrapperCategorias) {
+        let catalogoCompleto = [];
+        
+        // Varre cada Categoria criada na tela
+        wrapperCategorias.querySelectorAll('.categoria-block').forEach(catBlock => {
+            let nomeCategoria = catBlock.querySelector('.cat-nome').value;
+            let itensDaCategoria = [];
+            
+            // Varre cada Item dentro desta categoria
+            catBlock.querySelectorAll('.item-row').forEach(itemRow => {
+                itensDaCategoria.push({
+                    nome: itemRow.querySelector('.item-nome').value,
+                    preco: itemRow.querySelector('.item-preco').value
+                });
+            });
+            
+            catalogoCompleto.push({ 
+                categoria: nomeCategoria, 
+                itens: itensDaCategoria 
+            });
+        });
+        
+        // Salva esse "pacote" no campo oculto do formulário
+        form.querySelector('.catalogo-json-output').value = JSON.stringify(catalogoCompleto);
+    }
+    // ----------------------------------------------------------------
+
+    const formData = new FormData(form);
+    let dadosFormulario = Object.fromEntries(formData.entries());
+    
+    // Verifica o botão de emergência (Kill Switch)
+    const toggleBot = form.querySelector('#toggle-bot');
+    if (toggleBot) {
+        dadosFormulario['bot_desativado'] = toggleBot.checked ? "SIM" : "NAO";
+    }
+
+    const payload = {
+        cliente_id: clienteLogado.id,
+        acao: "salvar_configuracoes",
+        dados: dadosFormulario
+    };
+
+    console.log("Enviando para o n8n:", JSON.stringify(payload, null, 2));
+
+    const aviso = form.querySelector('.aviso-sucesso');
+    aviso.style.display = 'block';
+    setTimeout(() => { aviso.style.display = 'none'; }, 4000);
+}
