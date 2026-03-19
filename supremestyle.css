@@ -7,44 +7,51 @@
     --sidebar-bg: #1e293b;
     --danger: #ef4444;
     --success: #10b981;
+    --warning: #f59e0b;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); }
 
-/* --- TELA DE LOGIN --- */
+/* LOGIN */
 #login-screen { display: flex; height: 100vh; justify-content: center; align-items: center; background: var(--primary); }
 .login-box { background: var(--card-bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 350px; text-align: center; }
 .login-box h2 { color: var(--primary); margin-top: 0; }
-.form-control { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.form-control { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
 .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
 .btn:hover { background: var(--primary-hover); }
 .error-msg { color: var(--danger); font-size: 14px; display: none; margin-bottom: 10px; }
+.dicas-login { font-size: 12px; margin-top: 15px; color: #666; background: #f9f9f9; padding: 10px; border-radius: 4px; text-align: left; }
 
-/* --- DASHBOARD --- */
+/* DASHBOARD E MENU */
 #dashboard { display: none; height: 100vh; }
-
 .sidebar { width: 260px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; }
 .logo-area { padding: 20px; text-align: center; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #334155; }
-.menu-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #334155; transition: 0.2s; display: none; }
-.menu-item:hover, .menu-item.active { background: var(--primary); }
+.menu-tag { font-size: 11px; color: #94a3b8; font-weight: bold; padding: 15px 20px 5px 20px; margin: 0; letter-spacing: 1px; }
+.menu-item { padding: 12px 20px; cursor: pointer; transition: 0.2s; display: none; color: #cbd5e1; }
+.menu-item:hover, .menu-item.active { background: var(--primary); color: white; border-left: 4px solid white; }
 .menu-item.visible { display: block; }
 
+/* CONTEÚDO PRINCIPAL */
 .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-.header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.header-dash h1 { margin: 0; font-size: 1.8rem; }
-.btn-logout { background: var(--danger); width: auto; }
+.header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.header-dash h1 { margin: 0 0 5px 0; font-size: 1.5rem; }
+.badge { background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+.btn-logout { background: var(--danger); width: auto; padding: 8px 15px; }
 
-/* --- SEÇÕES E FORMULÁRIOS --- */
+/* SEÇÕES */
 .section-panel { display: none; background: var(--card-bg); padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
 .section-panel.active { display: block; }
+.section-panel h2 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 .input-group { margin-bottom: 15px; }
-.input-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-.input-group input, .input-group textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
+.input-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
+.input-group input, .input-group textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
 .input-group textarea { resize: vertical; height: 100px; }
 .btn-save { width: auto; margin-top: 10px; }
 .aviso-sucesso { display: none; background: var(--success); color: white; padding: 12px; border-radius: 4px; margin-top: 15px; text-align: center; font-weight: bold; }
+
+/* UPSELL DO DASHBOARD */
+.upsell-box { background: #fffbeb; border: 1px solid #fde68a; padding: 30px; text-align: center; border-radius: 8px; color: #92400e; }
+.upsell-box h3 { margin-top: 0; color: #b45309; }
+.btn-upgrade { background: var(--warning); color: #fff; width: auto; margin-top: 15px; }
+.btn-upgrade:hover { background: #d97706; }
+.grafico-simulado { border: 1px solid #eee; padding: 20px; border-radius: 8px; text-align: center; background: #f9fafb; }
