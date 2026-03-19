@@ -130,13 +130,16 @@
                         <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
                         <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
                     </div>
+                    <hr style="border-color: #333; margin: 20px 0;">
+                    
                     <div class="catalogo-header">
-                        <h3>Categorias e Valores</h3>
+                        <h3>Consultas e Exames</h3>
                         <button type="button" class="btn-add-cat" onclick="adicionarCategoria(this)">+ Nova Categoria</button>
                     </div>
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
-                    <button type="submit" class="btn btn-primary">Atualizar Clínica</button>
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Clínica</button>
                     <div class="aviso-sucesso">✅ Clínica atualizada!</div>
                 </form>
             </div>
@@ -144,22 +147,22 @@
             <div id="sec-restaurante" class="section-panel">
                 <h2>Gestão de Delivery</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
-                    
                     <div class="row-inputs">
                         <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
                         <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
                     </div>
                     <hr style="border-color: #333; margin: 20px 0;">
+                    
                     <div class="input-group"><label>Valor da Taxa de Entrega por KM (R$)</label><input type="number" step="0.01" name="taxa_km" placeholder="Ex: 1.50"></div>
-                <form onsubmit="salvarConfiguracoes(event)">
-                    <div class="input-group"><label>Valor da Taxa de Entrega por KM (R$)</label><input type="number" step="0.01" name="taxa_km" placeholder="Ex: 1.50"></div>
+                    
                     <div class="catalogo-header">
-                        <h3>Categorias e Valores</h3>
+                        <h3>Cardápio e Combos</h3>
                         <button type="button" class="btn-add-cat" onclick="adicionarCategoria(this)">+ Nova Categoria</button>
                     </div>
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
-                    <button type="submit" class="btn btn-primary">Atualizar Delivery</button>
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Delivery</button>
                     <div class="aviso-sucesso">✅ Delivery atualizado!</div>
                 </form>
             </div>
@@ -167,21 +170,22 @@
             <div id="sec-petshop" class="section-panel">
                 <h2>Gestão Pet & Clínica Veterinária</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
-
                     <div class="row-inputs">
                         <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
                         <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
                     </div>
                     <hr style="border-color: #333; margin: 20px 0;">
-                    <div class="input-group"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="valor_banho"></div>
-                <form onsubmit="salvarConfiguracoes(event)">
-                    <div class="input-group"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="valor_banho"></div>
+                    
+                    <div class="input-group"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="valor_banho" placeholder="Ex: 50.00"></div>
+                    
                     <div class="catalogo-header">
-                        <h3>Categorias e Valores</h3>
+                        <h3>Produtos e Serviços</h3>
                         <button type="button" class="btn-add-cat" onclick="adicionarCategoria(this)">+ Nova Categoria</button>
                     </div>
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Pet Shop</button>
                     <div class="aviso-sucesso">✅ Pet Shop atualizado!</div>
                 </form>
             </div>
@@ -189,20 +193,22 @@
             <div id="sec-loja" class="section-panel">
                 <h2>Catálogo de Produtos</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
-
                     <div class="row-inputs">
                         <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
                         <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
                     </div>
                     <hr style="border-color: #333; margin: 20px 0;">
+                    
                     <div class="input-group"><label>Chave PIX da Loja</label><input type="text" name="chave_pix" placeholder="Sua chave PIX para pagamentos automáticos"></div>
-                        <h3>Categorias e Valores</h3>
+                    
+                    <div class="catalogo-header">
+                        <h3>Categorias e Produtos</h3>
                         <button type="button" class="btn-add-cat" onclick="adicionarCategoria(this)">+ Nova Categoria</button>
                     </div>
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
-                    <div class="input-group"><label>Chave PIX da Loja</label><input type="text" name="chave_pix" placeholder="Sua chave PIX para pagamentos automáticos"></div>
-                    <button type="submit" class="btn btn-primary">Atualizar Loja</button>
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Loja</button>
                     <div class="aviso-sucesso">✅ Loja atualizada!</div>
                 </form>
             </div>
