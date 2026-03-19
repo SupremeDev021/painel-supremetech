@@ -11,18 +11,19 @@
     <div id="login-screen">
         <div class="login-box">
             <img src="somente o logo.jpg" alt="Supreme-Tech Logo" class="logo-login">
-            <h2>Supreme-Tech</h2>
-            <p>Acesse o seu painel</p>
+            <h2>Bem-vindo</h2>
+            <p>Acesse o seu painel de gestão</p>
             <div class="error-msg" id="login-error">Credenciais inválidas!</div>
             <form id="login-form">
                 <input type="email" id="email" class="form-control" placeholder="E-mail da Empresa" required>
                 <input type="password" id="senha" class="form-control" placeholder="Senha" required>
-                <button type="submit" class="btn btn-primary">Acessar Painel</button>
+                <button type="submit" class="btn btn-primary">Entrar no Painel</button>
             </form>
             <div class="dicas-login">
-                <b>Teste os Planos:</b><br>
-                - clinica@teste.com (Plano Supreme)<br>
-                - loja@teste.com (Plano Elite)<br>
+                <b>Contas de Teste:</b><br>
+                - clinica@teste.com (SUPREME SUPER)<br>
+                - restaurante@teste.com (SUPREME BASIC)<br>
+                - loja@teste.com (SUPREME ELITE)<br>
                 <i>Senha: 123</i>
             </div>
         </div>
@@ -37,12 +38,12 @@
             
             <p class="menu-tag">MENU PRINCIPAL</p>
             <div class="menu-item visible active" onclick="navegar('sec-dashboard', this)" data-menu="todos">📊 Dashboard</div>
-            <div class="menu-item visible" onclick="navegar('sec-textos', this)" data-menu="todos">📝 Textos do Robô</div>
+            <div class="menu-item visible" onclick="navegar('sec-textos', this)" data-menu="todos">📝 Personalizar Robô</div>
             
-            <p class="menu-tag">CONFIGURAÇÕES</p>
-            <div class="menu-item" onclick="navegar('sec-horarios', this)" data-menu="clinica,loja,petshop">🕒 Horários</div>
-            <div class="menu-item" onclick="navegar('sec-cardapio', this)" data-menu="restaurante">🍔 Cardápio & Combos</div>
-            <div class="menu-item" onclick="navegar('sec-servicos', this)" data-menu="clinica,petshop">🩺 Serviços e Valores</div>
+            <p class="menu-tag">GESTÃO DO NEGÓCIO</p>
+            <div class="menu-item" onclick="navegar('sec-clinica', this)" data-menu="clinica">🩺 Consultas & Horários</div>
+            <div class="menu-item" onclick="navegar('sec-restaurante', this)" data-menu="restaurante">🍔 Cardápio & Taxas</div>
+            <div class="menu-item" onclick="navegar('sec-petshop', this)" data-menu="petshop">🐶 Serviços Pet & Loja</div>
             <div class="menu-item" onclick="navegar('sec-loja', this)" data-menu="loja">🛍️ Catálogo da Loja</div>
 
             <p class="menu-tag">AJUDA</p>
@@ -63,20 +64,143 @@
                 
                 <div id="dash-bloqueado" class="upsell-box">
                     <img src="somente o logo.jpg" alt="Logo" class="logo-upsell">
-                    <h3>🔒 Recurso Exclusivo do Plano Elite 360</h3>
-                    <p>O Dashboard mostra gráficos em tempo real de atendimentos, horários de pico e produtos mais vendidos.</p>
-                    <button class="btn btn-upgrade" onclick="solicitarUpgrade()">Fazer Upgrade</button>
+                    <h3>🔒 Dashboard Personalizado Bloqueado</h3>
+                    <p>O seu painel de gráficos em tempo real precisa ser construído sob medida para a sua operação. Entre em contato com o nosso suporte para projetarmos o seu Dashboard ideal e fazer o upgrade para o plano <b>SUPREME ELITE</b>.</p>
+                    <button class="btn btn-upgrade" onclick="abrirWhatsAppSuporte()">Solicitar Criação do Dashboard</button>
                 </div>
 
                 <div id="dash-liberado" style="display: none;">
-                    <p>Conversas do seu robô nos últimos 7 dias:</p>
+                    <p>Métricas de atendimento dos últimos 7 dias:</p>
                     <div class="grafico-simulado">
-                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico" style="width: 100%; max-width: 600px; border-radius: 8px;">
+                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico" style="width: 100%; max-width: 600px; border-radius: 8px; filter: invert(1) hue-rotate(180deg);">
                     </div>
                 </div>
             </div>
 
+            <div id="sec-textos" class="section-panel">
+                <h2>Personalização e Controle do Robô</h2>
+                <form onsubmit="salvarConfiguracoes(event)">
+                    
+                    <div class="emergency-panel">
+                        <div class="emergency-text">
+                            <h3>Controle de Funcionamento</h3>
+                            <p>Desative o atendimento automático caso precise fechar mais cedo, em feriados ou durante imprevistos.</p>
+                        </div>
+                        <div class="emergency-toggle">
+                            <label class="switch-container">
+                                <span class="switch-label">DESATIVAR CHATBOT</span>
+                                <label class="switch">
+                                    <input type="checkbox" name="bot_desativado" id="toggle-bot">
+                                    <span class="slider round"></span>
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Mensagem de Ausência (Enviada quando o robô estiver desativado)</label>
+                        <textarea name="msg_ausencia" placeholder="Ex: Olá! No momento não estamos atendendo devido a um imprevisto/feriado. Retornaremos em breve!"></textarea>
+                    </div>
+
+                    <hr style="border-color: #333; margin: 30px 0;">
+
+                    <h3>Personalidade do Atendimento</h3>
+                    <div class="input-group">
+                        <label>Mensagem de Saudação (Início da conversa)</label>
+                        <textarea name="msg_saudacao" placeholder="Ex: Olá! Bem-vindo(a). Como posso ajudar você hoje?"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Mensagem de Erro (Quando o cliente digita algo que o robô não entende)</label>
+                        <input type="text" name="msg_erro" placeholder="Ex: Desculpe, não entendi. Por favor, digite apenas o número da opção desejada.">
+                    </div>
+                    <div class="input-group">
+                        <label>Mensagem de Finalização (Despedida)</label>
+                        <textarea name="msg_finalizacao" placeholder="Ex: Agradecemos o contato! Qualquer dúvida, estamos à disposição."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Salvar Personalizações</button>
+                    <div class="aviso-sucesso">✅ Alterações salvas! O robô já foi atualizado.</div>
+                </form>
             </div>
+
+            <div id="sec-clinica" class="section-panel">
+                <h2>Gestão da Clínica</h2>
+                <form onsubmit="salvarConfiguracoes(event)">
+                    <div class="row-inputs">
+                        <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
+                        <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
+                    </div>
+                    <h3>Consultas e Exames</h3>
+                    <div class="input-group"><label>Lista de Especialidades (Ex: Pediatria - R$ 150)</label><textarea name="lista_exames" placeholder="Digite uma consulta e valor por linha..."></textarea></div>
+                    <button type="submit" class="btn btn-primary">Atualizar Clínica</button>
+                    <div class="aviso-sucesso">✅ Clínica atualizada!</div>
+                </form>
+            </div>
+
+            <div id="sec-restaurante" class="section-panel">
+                <h2>Gestão de Delivery</h2>
+                <form onsubmit="salvarConfiguracoes(event)">
+                    <div class="input-group"><label>Valor da Taxa de Entrega por KM (R$)</label><input type="number" step="0.01" name="taxa_km" placeholder="Ex: 1.50"></div>
+                    <h3>Cardápio e Combos</h3>
+                    <div class="input-group"><label>Produtos (Ex: Combo Supreme - R$ 35,00)</label><textarea name="lista_cardapio" placeholder="Digite o nome do lanche/combo e o valor por linha..."></textarea></div>
+                    <button type="submit" class="btn btn-primary">Atualizar Delivery</button>
+                    <div class="aviso-sucesso">✅ Delivery atualizado!</div>
+                </form>
+            </div>
+
+            <div id="sec-petshop" class="section-panel">
+                <h2>Gestão Pet & Clínica Veterinária</h2>
+                <form onsubmit="salvarConfiguracoes(event)">
+                    <div class="input-group"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="valor_banho"></div>
+                    <h3>Produtos e Medicamentos</h3>
+                    <div class="input-group"><label>Catálogo Pet (Ex: Ração Golden 15kg - R$ 180,00)</label><textarea name="lista_produtos_pet" placeholder="Digite os produtos e valores..."></textarea></div>
+                    <button type="submit" class="btn btn-primary">Atualizar Pet Shop</button>
+                    <div class="aviso-sucesso">✅ Pet Shop atualizado!</div>
+                </form>
+            </div>
+
+            <div id="sec-loja" class="section-panel">
+                <h2>Catálogo de Produtos</h2>
+                <form onsubmit="salvarConfiguracoes(event)">
+                    <div class="input-group"><label>Produtos Disponíveis (Nome e Valor)</label><textarea name="lista_loja" placeholder="Ex: Camiseta Preta - R$ 49,90"></textarea></div>
+                    <div class="input-group"><label>Chave PIX da Loja</label><input type="text" name="chave_pix" placeholder="Sua chave PIX para pagamentos automáticos"></div>
+                    <button type="submit" class="btn btn-primary">Atualizar Loja</button>
+                    <div class="aviso-sucesso">✅ Loja atualizada!</div>
+                </form>
+            </div>
+
+            <div id="sec-contato" class="section-panel">
+                <h2>Central de Suporte Supreme-Tech</h2>
+                <p>Precisa de ajuda ou deseja fazer um upgrade no seu plano? Fale diretamente com a nossa equipe.</p>
+                
+                <div style="margin-bottom: 30px;">
+                    <button class="btn btn-whatsapp" onclick="abrirWhatsAppSuporte()">
+                        <span style="font-size: 1.2rem;">📱</span> Chamar no WhatsApp Agora
+                    </button>
+                </div>
+
+                <hr style="border: 1px solid #333; margin-bottom: 20px;">
+
+                <p>Ou envie um chamado interno:</p>
+                <form onsubmit="enviarContato(event)">
+                    <div class="input-group">
+                        <label>Assunto</label>
+                        <select name="assunto" class="form-control">
+                            <option>Dúvida Técnica</option>
+                            <option>Alteração Avançada</option>
+                            <option>Upgrade de Plano</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Sua Mensagem</label>
+                        <textarea name="mensagem_suporte" placeholder="Como podemos ajudar?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Chamado</button>
+                    <div class="aviso-sucesso">✅ Chamado aberto com sucesso!</div>
+                </form>
+            </div>
+
+        </div>
     </div>
 
     <script src="supremejava.js"></script>
