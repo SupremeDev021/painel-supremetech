@@ -10,26 +10,30 @@
 
     <div id="login-screen">
         <div class="login-box">
+            <img src="somente o logo.jpg" alt="Supreme-Tech Logo" class="logo-login">
             <h2>Supreme-Tech</h2>
             <p>Acesse o seu painel</p>
             <div class="error-msg" id="login-error">Credenciais inválidas!</div>
             <form id="login-form">
                 <input type="email" id="email" class="form-control" placeholder="E-mail da Empresa" required>
                 <input type="password" id="senha" class="form-control" placeholder="Senha" required>
-                <button type="submit" class="btn">Acessar Painel</button>
+                <button type="submit" class="btn btn-primary">Acessar Painel</button>
             </form>
             <div class="dicas-login">
                 <b>Teste os Planos:</b><br>
-                - clinica@teste.com (Plano Supreme - Gráfico Bloqueado)<br>
-                - loja@teste.com (Plano Elite - Gráfico Liberado)<br>
-                <i>Senha para ambos: 123</i>
+                - clinica@teste.com (Plano Supreme)<br>
+                - loja@teste.com (Plano Elite)<br>
+                <i>Senha: 123</i>
             </div>
         </div>
     </div>
 
     <div id="dashboard">
         <div class="sidebar">
-            <div class="logo-area">Supreme-Tech</div>
+            <div class="logo-area-sidebar">
+                <img src="somente o logo.jpg" alt="Logo" class="logo-sidebar">
+                <span>Supreme-Tech</span>
+            </div>
             
             <p class="menu-tag">MENU PRINCIPAL</p>
             <div class="menu-item visible active" onclick="navegar('sec-dashboard', this)" data-menu="todos">📊 Dashboard</div>
@@ -49,7 +53,7 @@
             <div class="header-dash">
                 <div>
                     <h1 id="nome-empresa">Carregando...</h1>
-                    <span id="badge-plano" class="badge">Plano Atual</span>
+                    <span id="badge-plano" class="badge">Plano</span>
                 </div>
                 <button class="btn btn-logout" onclick="fazerLogout()">Sair</button>
             </div>
@@ -58,92 +62,21 @@
                 <h2>Relatórios de Desempenho</h2>
                 
                 <div id="dash-bloqueado" class="upsell-box">
+                    <img src="somente o logo.jpg" alt="Logo" class="logo-upsell">
                     <h3>🔒 Recurso Exclusivo do Plano Elite 360</h3>
-                    <p>Você está a um passo de ter o controle total do seu negócio. O Dashboard mostra gráficos em tempo real de atendimentos, horários de pico e produtos mais vendidos.</p>
-                    <button class="btn btn-upgrade" onclick="solicitarUpgrade()">Fazer Upgrade Agora</button>
+                    <p>O Dashboard mostra gráficos em tempo real de atendimentos, horários de pico e produtos mais vendidos.</p>
+                    <button class="btn btn-upgrade" onclick="solicitarUpgrade()">Fazer Upgrade</button>
                 </div>
 
                 <div id="dash-liberado" style="display: none;">
-                    <p>Acompanhe o volume de conversas do seu robô nos últimos 7 dias:</p>
+                    <p>Conversas do seu robô nos últimos 7 dias:</p>
                     <div class="grafico-simulado">
-                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico Simulado" style="width: 100%; max-width: 600px; border-radius: 8px;">
+                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico" style="width: 100%; max-width: 600px; border-radius: 8px;">
                     </div>
                 </div>
             </div>
 
-            <div id="sec-textos" class="section-panel">
-                <h2>Mensagens do Robô</h2>
-                <form onsubmit="salvarConfiguracoes(event, 'form-textos')">
-                    <div class="input-group"><label>Mensagem de Saudação</label><textarea name="msg_saudacao"></textarea></div>
-                    <div class="input-group"><label>Mensagem de Fora do Horário</label><textarea name="msg_fechado"></textarea></div>
-                    <button type="submit" class="btn btn-save">Salvar Mensagens</button>
-                    <div class="aviso-sucesso">✅ Mensagens atualizadas no servidor!</div>
-                </form>
             </div>
-
-            <div id="sec-horarios" class="section-panel">
-                <h2>Horários de Funcionamento</h2>
-                <form onsubmit="salvarConfiguracoes(event, 'form-horarios')">
-                    <div class="input-group"><label>Abertura</label><input type="time" name="horario_abertura"></div>
-                    <div class="input-group"><label>Fechamento</label><input type="time" name="horario_fechamento"></div>
-                    <button type="submit" class="btn btn-save">Salvar Horários</button>
-                    <div class="aviso-sucesso">✅ Horários atualizados com sucesso!</div>
-                </form>
-            </div>
-
-            <div id="sec-cardapio" class="section-panel">
-                <h2>Cardápio e Preços</h2>
-                <form onsubmit="salvarConfiguracoes(event, 'form-cardapio')">
-                    <div class="input-group"><label>Preço Combo 1 (R$)</label><input type="number" step="0.01" name="preco_combo1"></div>
-                    <div class="input-group"><label>Taxa de Entrega Fixa (R$)</label><input type="number" step="0.01" name="taxa_entrega"></div>
-                    <button type="submit" class="btn btn-save">Atualizar Cardápio</button>
-                    <div class="aviso-sucesso">✅ O robô já está cobrando os novos valores!</div>
-                </form>
-            </div>
-
-            <div id="sec-servicos" class="section-panel">
-                <h2>Tabela de Serviços</h2>
-                <form onsubmit="salvarConfiguracoes(event, 'form-servicos')">
-                    <div class="input-group"><label>Valor da Consulta (R$)</label><input type="number" step="0.01" name="preco_consulta"></div>
-                    <div class="input-group" id="bloco-banho" style="display:none;"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="preco_banho"></div>
-                    <button type="submit" class="btn btn-save">Atualizar Valores</button>
-                    <div class="aviso-sucesso">✅ Tabela de preços atualizada!</div>
-                </form>
-            </div>
-
-            <div id="sec-loja" class="section-panel">
-                <h2>Integração da Loja</h2>
-                <form onsubmit="salvarConfiguracoes(event, 'form-loja')">
-                    <div class="input-group"><label>Link do Catálogo (PDF ou Site)</label><input type="url" name="link_catalogo"></div>
-                    <div class="input-group"><label>Chave PIX de Recebimento</label><input type="text" name="chave_pix"></div>
-                    <button type="submit" class="btn btn-save">Atualizar Loja</button>
-                    <div class="aviso-sucesso">✅ Informações de pagamento atualizadas!</div>
-                </form>
-            </div>
-
-            <div id="sec-contato" class="section-panel">
-                <h2>Fale com a Supreme-Tech</h2>
-                <p>Precisa de ajuda com o seu robô ou deseja solicitar uma alteração avançada? Envie uma mensagem para a nossa equipe.</p>
-                <form onsubmit="enviarContato(event)">
-                    <div class="input-group">
-                        <label>Assunto</label>
-                        <select name="assunto" class="form-control">
-                            <option>Dúvida Técnica</option>
-                            <option>Problema com o Robô</option>
-                            <option>Solicitar nova Funcionalidade</option>
-                            <option>Financeiro</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Sua Mensagem</label>
-                        <textarea name="mensagem_suporte" placeholder="Descreva como podemos ajudar..."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-save">Enviar Ticket de Suporte</button>
-                    <div class="aviso-sucesso">✅ Mensagem enviada! A nossa equipa entrará em contato em breve.</div>
-                </form>
-            </div>
-
-        </div>
     </div>
 
     <script src="supremejava.js"></script>
