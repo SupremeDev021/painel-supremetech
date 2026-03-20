@@ -35,7 +35,36 @@ document.getElementById('login-form').addEventListener('submit', async function(
             erroDiv.innerText = "⛔ Acesso Suspenso. Por favor, entre em contato com o suporte financeiro da Supreme-Tech.";
             return; // O 'return' impede que o código continue e abra o painel!
         }
-        
+  // === ALTERAR SENHA PELO PAINEL DO CLIENTE ===
+async function alterarMinhaSenha(event) {
+    event.preventDefault(); // Impede a página de recarregar
+    
+    if(!clienteLogado) return;
+
+    const novaSenha = document.getElementById('nova-senha-cliente').value;
+    const btn = event.target.querySelector('button');
+    const txtOrig = btn.innerText;
+    
+    btn.innerText = "Salvando...";
+
+    // Vai no Supabase e atualiza apenas a coluna 'senha' do cliente atual
+    const { error } = await supabaseClient
+        .from('clientes')
+        .update({ senha: novaSenha })
+        .eq('id', clienteLogado.id);
+
+    btn.innerText = txtOrig;
+
+    if (error) {
+        alert("Ocorreu um erro ao tentar alterar sua senha. Tente novamente.");
+        console.error(error);
+    } else {
+        // Atualiza a memória local
+        clienteLogado.senha = novaSenha; 
+        alert("✅ Sua senha foi alterada com sucesso! Use a nova senha no próximo login.");
+        document.getElementById('nova-senha-cliente').value = ''; // Limpa o campo
+    }
+}      
         // Se chegou aqui, o cliente está ATIVO e pode entrar.
         erroDiv.style.display = 'none';
         iniciarSessao(cliente);
@@ -211,4 +240,34 @@ function enviarContato(event) {
     aviso.style.display = 'block';
     form.reset(); 
     setTimeout(() => { aviso.style.display = 'none'; }, 4000);
+}
+// === ALTERAR SENHA PELO PAINEL DO CLIENTE ===
+async function alterarMinhaSenha(event) {
+    event.preventDefault(); // Impede a página de recarregar
+    
+    if(!clienteLogado) return;
+
+    const novaSenha = document.getElementById('nova-senha-cliente').value;
+    const btn = event.target.querySelector('button');
+    const txtOrig = btn.innerText;
+    
+    btn.innerText = "Salvando...";
+
+    // Vai no Supabase e atualiza apenas a coluna 'senha' do cliente atual
+    const { error } = await supabaseClient
+        .from('clientes')
+        .update({ senha: novaSenha })
+        .eq('id', clienteLogado.id);
+
+    btn.innerText = txtOrig;
+
+    if (error) {
+        alert("Ocorreu um erro ao tentar alterar sua senha. Tente novamente.");
+        console.error(error);
+    } else {
+        // Atualiza a memória local
+        clienteLogado.senha = novaSenha; 
+        alert("✅ Sua senha foi alterada com sucesso! Use a nova senha no próximo login.");
+        document.getElementById('nova-senha-cliente').value = ''; // Limpa o campo
+    }
 }
