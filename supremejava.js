@@ -1,39 +1,53 @@
-const URL_WEBHOOK_N8N = "https://seu-n8n.com/webhook/atualizar-configs";
-const NUMERO_WHATSAPP_SUPORTE = "5521999999999"; 
+// === CONEXÃO COM O BANCO DE DADOS (SUPABASE) ===
+const SUPABASE_URL = 'https://hhyvtehbsfoeuagwhklm.supabase.co';
+const SUPABASE_KEY = 'COLE_AQUI_A_SUA_PUBLISHKEY_COMPLETA'; // <--- COLE SUA CHAVE AQUI
 
+// Inicia a comunicação com o Banco de Dados
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const NUMERO_WHATSAPP_SUPORTE = "5521999999999"; 
 let clienteLogado = null;
 
-// === EVENTO DE LOGIN ===
-document.getElementById('login-form').addEventListener('submit', function(e) {
+// === EVENTO DE LOGIN REAL NO BANCO DE DADOS ===
+document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    const erroDiv = document.getElementById('login-error');
     
-    let simulaRespostaBanco = null;
+    // Mostra carregando no botão
+    const btn = this.querySelector('button');
+    const textoOriginal = btn.innerText;
+    btn.innerText = "Autenticando...";
 
-    if(email === "clinica@teste.com") {
-        simulaRespostaBanco = { id: 1, nome: "Clínica Saúde Total", segmento: "clinica", plano: "supreme super" };
-    } else if (email === "restaurante@teste.com") {
-        simulaRespostaBanco = { id: 2, nome: "Burger Prime", segmento: "restaurante", plano: "supreme basic" };
-    } else if (email === "loja@teste.com") {
-        simulaRespostaBanco = { id: 4, nome: "Tech Store", segmento: "loja", plano: "supreme elite" };
-    } else if (email === "petshop@teste.com") {
-        simulaRespostaBanco = { id: 3, nome: "Pet Gold", segmento: "petshop", plano: "supreme basic" };
-    }
+    // Vai no Supabase e pergunta: "Existe esse e-mail com essa senha?"
+    const { data: cliente, error } = await supabase
+        .from('clientes')
+        .select('*')
+        .eq('email', email)
+        .eq('senha', senha)
+        .single(); // Espera encontrar 1 único cliente
 
-    if (simulaRespostaBanco) {
-        document.getElementById('login-error').style.display = 'none';
-        iniciarSessao(simulaRespostaBanco);
+    btn.innerText = textoOriginal;
+
+    if (cliente) {
+        // Sucesso! O cliente existe no banco.
+        erroDiv.style.display = 'none';
+        iniciarSessao(cliente);
     } else {
-        document.getElementById('login-error').style.display = 'block';
+        // Falha! E-mail ou senha errados.
+        erroDiv.style.display = 'block';
+        erroDiv.innerText = "Acesso Negado. Credenciais inválidas.";
     }
 });
 
+// === MONTA O PAINEL DE ACORDO COM O CLIENTE ===
 function iniciarSessao(dadosCliente) {
     clienteLogado = dadosCliente;
     
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
-    document.getElementById('nome-empresa').innerText = clienteLogado.nome;
+    document.getElementById('nome-empresa').innerText = clienteLogado.nome_empresa; // Usando o nome real do banco
     document.getElementById('badge-plano').innerText = "Plano " + clienteLogado.plano.toUpperCase();
 
     const menus = document.querySelectorAll('.menu-item');
@@ -46,7 +60,7 @@ function iniciarSessao(dadosCliente) {
         }
     });
 
-    if (clienteLogado.plano === 'supreme elite') {
+    if (clienteLogado.plano.includes('elite')) {
         document.getElementById('dash-bloqueado').style.display = 'none';
         document.getElementById('dash-liberado').style.display = 'block';
     } else {
@@ -73,14 +87,11 @@ function fazerLogout() {
 }
 
 function abrirWhatsAppSuporte() {
-    const texto = encodeURIComponent(`Olá, equipe Supreme-Tech! Sou da empresa *${clienteLogado.nome}* e preciso de ajuda no meu painel.`);
+    const texto = encodeURIComponent(`Olá, equipe Supreme-Tech! Sou da empresa *${clienteLogado.nome_empresa}* e preciso de ajuda no meu painel.`);
     window.open(`https://wa.me/${NUMERO_WHATSAPP_SUPORTE}?text=${texto}`, '_blank');
 }
 
-
-// === MOTOR DO CATÁLOGO DINÂMICO (CORRIGIDO) ===
-
-// 1. Cria o bloco de uma nova Categoria (Seguro contra erros de HTML)
+// === MOTOR DO CATÁLOGO ===
 function adicionarCategoria(botao) {
     const wrapper = botao.closest('.section-panel').querySelector('.categorias-wrapper');
     const div = document.createElement('div');
@@ -94,12 +105,10 @@ function adicionarCategoria(botao) {
         <div class="itens-wrapper"></div>
         <button type="button" class="btn-add-item" onclick="adicionarItem(this)">+ Adicionar Nome e Valor</button>
     `;
-    
     wrapper.appendChild(div);
     adicionarItem(div.querySelector('.btn-add-item'));
 }
 
-// 2. Cria a linha com Nome e Preço
 function adicionarItem(botao) {
     const wrapper = botao.previousElementSibling; 
     const div = document.createElement('div');
@@ -110,21 +119,18 @@ function adicionarItem(botao) {
         <input type="text" placeholder="R$ 0,00" class="item-preco" required>
         <button type="button" class="btn-remove" onclick="this.parentElement.remove()" title="Excluir Item">✖</button>
     `;
-    
     wrapper.appendChild(div);
 }
 
-
-// === ENVIO DE DADOS (UNIFICADO) ===
-function salvarConfiguracoes(event) {
+// === ENVIO DE DADOS REAIS PARA O SUPABASE ===
+async function salvarConfiguracoes(event) {
     event.preventDefault();
     const form = event.target;
     
-    // 1. MAGIA DO CATÁLOGO: Transforma as linhas em um pacote JSON
+    // 1. Processa o Catálogo
     const wrapperCategorias = form.querySelector('.categorias-wrapper');
+    let catalogoCompleto = [];
     if (wrapperCategorias) {
-        let catalogoCompleto = [];
-        
         wrapperCategorias.querySelectorAll('.categoria-block').forEach(catBlock => {
             let nomeCategoria = catBlock.querySelector('.cat-nome').value;
             let itensDaCategoria = [];
@@ -135,42 +141,48 @@ function salvarConfiguracoes(event) {
                     preco: itemRow.querySelector('.item-preco').value
                 });
             });
-            
-            catalogoCompleto.push({ 
-                categoria: nomeCategoria, 
-                itens: itensDaCategoria 
-            });
+            catalogoCompleto.push({ categoria: nomeCategoria, itens: itensDaCategoria });
         });
-        
-        form.querySelector('.catalogo-json-output').value = JSON.stringify(catalogoCompleto);
     }
 
-    // 2. Coleta os textos, horários e taxas
+    // 2. Coleta o resto dos dados (Horários, Textos, Taxas)
     const formData = new FormData(form);
     let dadosFormulario = Object.fromEntries(formData.entries());
     
-    // 3. Verifica o botão de emergência (Kill Switch)
+    // Junta o catálogo formatado aos dados gerais
+    dadosFormulario['catalogo'] = catalogoCompleto;
+
+    // 3. Verifica o botão de emergência
     const toggleBot = form.querySelector('#toggle-bot');
-    if (toggleBot) {
-        dadosFormulario['bot_desativado'] = toggleBot.checked ? "SIM" : "NAO";
+    const statusBot = toggleBot ? (toggleBot.checked ? "SIM" : "NAO") : "NAO";
+
+    // Mostra que está salvando
+    const btnSalvar = form.querySelector('button[type="submit"]');
+    const textoBotaoOrig = btnSalvar.innerText;
+    btnSalvar.innerText = "Salvando na Nuvem...";
+
+    // 4. ATUALIZA O BANCO DE DADOS OFICIAL (SUPABASE)
+    const { data, error } = await supabase
+        .from('configuracoes_robo')
+        .upsert({ 
+            cliente_id: clienteLogado.id, 
+            bot_desativado: statusBot,
+            dados_painel: dadosFormulario 
+        });
+
+    btnSalvar.innerText = textoBotaoOrig;
+
+    if (error) {
+        console.error("Erro no Supabase:", error);
+        alert("Ocorreu um erro ao salvar. Tente novamente.");
+    } else {
+        const aviso = form.querySelector('.aviso-sucesso');
+        aviso.style.display = 'block';
+        setTimeout(() => { aviso.style.display = 'none'; }, 4000);
     }
-
-    // 4. Monta o pacote final para o n8n
-    const payload = {
-        cliente_id: clienteLogado.id,
-        acao: "salvar_configuracoes",
-        dados: dadosFormulario
-    };
-
-    console.log("Enviando para o n8n:", JSON.stringify(payload, null, 2));
-
-    const aviso = form.querySelector('.aviso-sucesso');
-    aviso.style.display = 'block';
-    setTimeout(() => { aviso.style.display = 'none'; }, 4000);
 }
 
-
-// === ENVIO DE SUPORTE ===
+// === ENVIO DE SUPORTE (Webhook do n8n) ===
 function enviarContato(event) {
     event.preventDefault();
     const form = event.target;
@@ -183,7 +195,12 @@ function enviarContato(event) {
         mensagem: formData.get('mensagem_suporte')
     };
 
-    console.log("Ticket enviado:", JSON.stringify(payload));
+    // Aqui usamos o n8n para enviar o alerta para você via WhatsApp/Email!
+    fetch("https://seu-n8n.com/webhook/ticket-suporte", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
 
     const aviso = form.querySelector('.aviso-sucesso');
     aviso.style.display = 'block';
