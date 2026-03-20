@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperAdmin | Supreme-Tech Master</title>
+    <link rel="stylesheet" href="adminstyle.css">
+</head>
+<body>
+
+    <div id="login-admin">
+        <div class="admin-box">
+            <img src="somente o logo.jpg" alt="Supreme-Tech Logo" class="logo-login">
+            <h2>Nível Master</h2>
+            <p>Acesso Restrito - Supreme-Tech</p>
+            <form id="form-login" onsubmit="entrarAdmin(event)">
+                <input type="password" id="admin-senha" class="form-control" placeholder="Senha Mestra" required>
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Acessar Central</button>
+            </form>
+            <div id="erro-login" class="error-msg">Acesso Negado. Senha incorreta.</div>
+            <div class="dicas-login">Dica para teste: a senha é <b>master123</b></div>
+        </div>
+    </div>
+
+    <div id="admin-panel">
+        
+        <div class="sidebar">
+            <div class="logo-area-sidebar">
+                <img src="somente o logo.jpg" alt="Logo" class="logo-sidebar">
+                <span>SuperAdmin</span>
+            </div>
+            
+            <p class="menu-tag">CONTROLE GERAL</p>
+            <div class="menu-item active" onclick="navegarAdmin('sec-visao', this)">📊 Visão Geral</div>
+            <div class="menu-item" onclick="navegarAdmin('sec-clientes', this)">👥 Gerenciar Clientes</div>
+            <div class="menu-item" onclick="navegarAdmin('sec-novo', this)">➕ Cadastrar Cliente</div>
+        </div>
+
+        <div class="main-content">
+            <div class="header-dash">
+                <h1>Painel de Controle da Franquia</h1>
+                <button class="btn btn-logout" onclick="sairAdmin()">Bloquear Sistema</button>
+            </div>
+
+            <div id="sec-visao" class="section-panel active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Clientes Ativos</h3>
+                        <div class="value">42</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Robôs Suspensos</h3>
+                        <div class="value" style="color: var(--danger);">3</div>
+                    </div>
+                    <div class="stat-card" style="border-top-color: var(--success);">
+                        <h3>Receita Mensal (MRR)</h3>
+                        <div class="value" style="color: var(--success);">R$ 12.450</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-clientes" class="section-panel">
+                <div class="box-panel">
+                    <div class="box-header">
+                        <h2>Base de Clientes</h2>
+                        <button class="btn btn-primary" style="width: auto; padding: 8px 15px;" onclick="navegarAdmin('sec-novo', document.querySelectorAll('.menu-item')[2])">+ Novo Cliente</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Empresa</th>
+                                    <th>Segmento</th>
+                                    <th>Plano</th>
+                                    <th>Status</th>
+                                    <th>Ações de Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-clientes">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-novo" class="section-panel">
+                <div class="box-panel" style="max-width: 800px;">
+                    <div class="box-header">
+                        <h2>Cadastrar Nova Empresa</h2>
+                    </div>
+                    <form onsubmit="cadastrarCliente(event)">
+                        <div class="input-group">
+                            <label>Nome da Empresa (Fantasia)</label>
+                            <input type="text" name="nome_empresa" class="form-control" placeholder="Ex: Clínica Dr. Marcos" required>
+                        </div>
+                        
+                        <div class="row-inputs">
+                            <div class="input-group" style="flex: 2;">
+                                <label>E-mail de Acesso (Login do Cliente)</label>
+                                <input type="email" name="email_cliente" class="form-control" placeholder="contato@empresa.com" required>
+                            </div>
+                            <div class="input-group" style="flex: 1;">
+                                <label>Segmento do Robô</label>
+                                <select name="segmento" class="form-control" required>
+                                    <option value="clinica">Clínica</option>
+                                    <option value="restaurante">Delivery / Restaurante</option>
+                                    <option value="petshop">Pet Shop</option>
+                                    <option value="loja">Loja / Catálogo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row-inputs">
+                            <div class="input-group" style="flex: 1;">
+                                <label>Plano Contratado</label>
+                                <select name="plano" class="form-control" required>
+                                    <option value="supreme basic">Supreme Basic</option>
+                                    <option value="supreme super">Supreme Super</option>
+                                    <option value="supreme elite">Supreme Elite</option>
+                                </select>
+                            </div>
+                            <div class="input-group" style="flex: 1;">
+                                <label>Senha de Acesso Inicial</label>
+                                <input type="text" id="senha-gerada" name="senha" class="form-control" placeholder="Clique em Gerar ->" required>
+                            </div>
+                            <div class="input-group" style="flex: 1;">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn btn-generate" onclick="gerarSenha()">Gerar Senha Segura</button>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 30px 0;">
+                        <button type="submit" class="btn btn-primary">Criar Conta e Liberar Painel</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="adminjava.js"></script>
+</body>
+</html>
