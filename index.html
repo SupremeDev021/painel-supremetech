@@ -48,6 +48,9 @@
 
             <p class="menu-tag">AJUDA</p>
             <div class="menu-item visible" onclick="navegar('sec-contato', this)" data-menu="todos">💬 Fale Conosco</div>
+            <div class="menu-item visible" data-menu="todos" onclick="abrirModalSenhaCliente()">
+            <span class="icon">🔒</span> Alterar Senha
+    </div>
         </div>
 
         <div class="main-content">
@@ -77,7 +80,7 @@
                 </div>
             </div>
 
-            <div id="sec-textos" class="section-panel">
+            <div id="sec-textos" >
                 <h2>Personalização e Controle do Robô</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     
@@ -123,17 +126,7 @@
                 </form>
             </div>
             
-            <div class="form-section" style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-                <h3 style="color: var(--primary); margin-bottom: 10px;">🔒 Segurança da Conta</h3>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">Deseja alterar sua senha de acesso ao painel?</p>
-                
-                <form onsubmit="alterarMinhaSenha(event)" style="display: flex; gap: 10px; max-width: 400px;">
-                    <input type="text" id="nova-senha-cliente" class="form-control" placeholder="Digite a nova senha" required minlength="4">
-                    <button type="submit" class="btn-salvar" style="width: auto; padding: 0 20px;">Atualizar Senha</button>
-                </form>
-            </div>
-
-            <div id="sec-clinica" class="section-panel">
+            <div id="sec-clinica" >
                 <h2>Gestão da Clínica</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
@@ -154,7 +147,7 @@
                 </form>
             </div>
 
-            <div id="sec-restaurante" class="section-panel">
+            <div id="sec-restaurante" >
                 <h2>Gestão de Delivery</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
@@ -177,7 +170,7 @@
                 </form>
             </div>
 
-            <div id="sec-petshop" class="section-panel">
+            <div id="sec-petshop" >
                 <h2>Gestão Pet & Clínica Veterinária</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
@@ -200,7 +193,7 @@
                 </form>
             </div>
 
-            <div id="sec-loja" class="section-panel">
+            <div id="sec-loja" >
                 <h2>Catálogo de Produtos</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
@@ -256,7 +249,19 @@
 
         </div>
     </div>
-    
+    <div id="modal-senha-cliente" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+        <div style="background: #1e1e24; border: 1px solid #333; border-radius: 8px; width: 90%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <button type="button" onclick="fecharModalSenhaCliente()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer;">✖</button>
+            
+            <h3 style="color: var(--primary); margin-bottom: 10px;">🔒 Alterar Senha</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Digite sua nova senha de acesso abaixo.</p>
+            
+            <form onsubmit="alterarMinhaSenha(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" id="nova-senha-input" class="form-control" placeholder="Sua nova senha" required minlength="4">
+                <button type="submit" class="btn-salvar" style="width: 100%;">Confirmar e Salvar</button>
+            </form>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supremejava.js"></script>
 </body>
