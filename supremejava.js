@@ -2,6 +2,25 @@
 const SUPABASE_URL = 'https://hhyvtehbsfoeuagwhklm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_S9oWEYBafLstrVI2SJQ9uA_ijH5Ph9e';
 
+// === MOTOR DE NOTIFICAÇÕES (TOAST) PARA O CLIENTE ===
+function mostrarToast(mensagem, tipo = 'success') {
+    let container = document.getElementById('toast-container');
+    if(!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast-msg ${tipo}`;
+    toast.innerHTML = mensagem;
+    container.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 3500); 
+}
 // Mudamos o nome para 'supabaseClient' para evitar o conflito do erro!
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
