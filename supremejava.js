@@ -241,19 +241,30 @@ function enviarContato(event) {
     form.reset(); 
     setTimeout(() => { aviso.style.display = 'none'; }, 4000);
 }
-// === ALTERAR SENHA PELO PAINEL DO CLIENTE ===
+// ==========================================
+// SISTEMA DE TROCA DE SENHA DO CLIENTE
+// ==========================================
+function abrirModalSenhaCliente() {
+    document.getElementById('modal-senha-cliente').style.display = 'flex';
+}
+
+function fecharModalSenhaCliente() {
+    document.getElementById('modal-senha-cliente').style.display = 'none';
+    document.getElementById('nova-senha-input').value = ''; // Limpa o campo ao fechar
+}
+
 async function alterarMinhaSenha(event) {
-    event.preventDefault(); // Impede a página de recarregar
+    event.preventDefault(); 
     
     if(!clienteLogado) return;
 
-    const novaSenha = document.getElementById('nova-senha-cliente').value;
+    const novaSenha = document.getElementById('nova-senha-input').value;
     const btn = event.target.querySelector('button');
     const txtOrig = btn.innerText;
     
-    btn.innerText = "Salvando...";
+    btn.innerText = "Atualizando Cofre...";
 
-    // Vai no Supabase e atualiza apenas a coluna 'senha' do cliente atual
+    // Vai no Supabase e atualiza a senha
     const { error } = await supabaseClient
         .from('clientes')
         .update({ senha: novaSenha })
@@ -265,9 +276,8 @@ async function alterarMinhaSenha(event) {
         alert("Ocorreu um erro ao tentar alterar sua senha. Tente novamente.");
         console.error(error);
     } else {
-        // Atualiza a memória local
         clienteLogado.senha = novaSenha; 
-        alert("✅ Sua senha foi alterada com sucesso! Use a nova senha no próximo login.");
-        document.getElementById('nova-senha-cliente').value = ''; // Limpa o campo
+        alert("✅ Sua senha foi alterada com sucesso!");
+        fecharModalSenhaCliente(); // Fecha a janela sozinho após o sucesso
     }
 }
