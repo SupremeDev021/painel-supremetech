@@ -1,9 +1,9 @@
 // === CONEXÃO COM O BANCO DE DADOS (SUPABASE) ===
 const SUPABASE_URL = 'https://hhyvtehbsfoeuagwhklm.supabase.co';
-const SUPABASE_KEY = 'COLE_AQUI_A_SUA_PUBLISHKEY_COMPLETA'; // <--- COLE SUA CHAVE AQUI
+const SUPABASE_KEY = 'sb_publishable_S9oWEYBafLstrVI2SJQ9uA_ijH5Ph9e'; // <--- COLE SUA CHAVE AQUI
 
-// Inicia a comunicação com o Banco de Dados
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Mudamos o nome para 'supabaseClient' para evitar o conflito do erro!
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const NUMERO_WHATSAPP_SUPORTE = "5521999999999"; 
 let clienteLogado = null;
@@ -21,7 +21,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     btn.innerText = "Autenticando...";
 
     // Vai no Supabase e pergunta: "Existe esse e-mail com essa senha?"
-    const { data: cliente, error } = await supabase
+    const { data: cliente, error } = await supabaseClient
         .from('clientes')
         .select('*')
         .eq('email', email)
@@ -47,7 +47,7 @@ function iniciarSessao(dadosCliente) {
     
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
-    document.getElementById('nome-empresa').innerText = clienteLogado.nome_empresa; // Usando o nome real do banco
+    document.getElementById('nome-empresa').innerText = clienteLogado.nome_empresa;
     document.getElementById('badge-plano').innerText = "Plano " + clienteLogado.plano.toUpperCase();
 
     const menus = document.querySelectorAll('.menu-item');
@@ -162,7 +162,7 @@ async function salvarConfiguracoes(event) {
     btnSalvar.innerText = "Salvando na Nuvem...";
 
     // 4. ATUALIZA O BANCO DE DADOS OFICIAL (SUPABASE)
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('configuracoes_robo')
         .upsert({ 
             cliente_id: clienteLogado.id, 
