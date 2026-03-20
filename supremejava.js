@@ -15,27 +15,32 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const senha = document.getElementById('senha').value;
     const erroDiv = document.getElementById('login-error');
     
-    // Mostra carregando no botão
     const btn = this.querySelector('button');
     const textoOriginal = btn.innerText;
     btn.innerText = "Autenticando...";
 
-    // Vai no Supabase e pergunta: "Existe esse e-mail com essa senha?"
     const { data: cliente, error } = await supabaseClient
         .from('clientes')
         .select('*')
         .eq('email', email)
         .eq('senha', senha)
-        .single(); // Espera encontrar 1 único cliente
+        .single(); 
 
     btn.innerText = textoOriginal;
 
     if (cliente) {
-        // Sucesso! O cliente existe no banco.
+        // === A TRAVA DE SEGURANÇA (KILL SWITCH FINANCEIRO) ===
+        if (cliente.status === 'suspenso') {
+            erroDiv.style.display = 'block';
+            erroDiv.innerText = "⛔ Acesso Suspenso. Por favor, entre em contato com o suporte financeiro da Supreme-Tech.";
+            return; // O 'return' impede que o código continue e abra o painel!
+        }
+        
+        // Se chegou aqui, o cliente está ATIVO e pode entrar.
         erroDiv.style.display = 'none';
         iniciarSessao(cliente);
+        
     } else {
-        // Falha! E-mail ou senha errados.
         erroDiv.style.display = 'block';
         erroDiv.innerText = "Acesso Negado. Credenciais inválidas.";
     }
