@@ -1,13 +1,19 @@
 // === CONEXÃO COM O BANCO DE DADOS (SUPABASE) ===
 const SUPABASE_URL = 'https://hhyvtehbsfoeuagwhklm.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_S9oWEYBafLstrVI2SJQ9uA_ijH5Ph9e'; // <--- COLE SUA CHAVE AQUI
+const SUPABASE_KEY = 'sb_publishable_S9oWEYBafLstrVI2SJQ9uA_ijH5Ph9e';
 
 // Mudamos o nome para 'supabaseClient' para evitar o conflito do erro!
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const NUMERO_WHATSAPP_SUPORTE = "5521999999999"; 
 let clienteLogado = null;
-
+window.onload = () => {
+    const sessaoSalva = localStorage.getItem('sessao_supreme');
+    if (sessaoSalva) {
+        // Se tem memória, pula a tela de login e vai direto pro painel!
+        iniciarSessao(JSON.parse(sessaoSalva));
+    }
+};
 // === EVENTO DE LOGIN REAL NO BANCO DE DADOS ===
 document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -78,6 +84,7 @@ async function alterarMinhaSenha(event) {
 // === MONTA O PAINEL DE ACORDO COM O CLIENTE ===
 function iniciarSessao(dadosCliente) {
     clienteLogado = dadosCliente;
+    localStorage.setItem('sessao_supreme', JSON.stringify(dadosCliente));
     
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'flex';
@@ -115,6 +122,7 @@ function navegar(idSecao, elementoMenu) {
 
 function fazerLogout() {
     clienteLogado = null;
+    localStorage.removeItem('sessao_supreme');
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-form').reset();
