@@ -154,3 +154,87 @@ input:checked + .slider:before { transform: translateX(30px); }
 .toast-msg.success { border-left: 5px solid #00d2ff; } /* Azul Supreme */
 .toast-msg.error { border-left: 5px solid #ff4d4d; }
 .toast-msg.warning { border-left: 5px solid #ffc107; }
+
+/* ========================================== */
+/* RESPONSIVIDADE SUPREME (CELULARES E TABLETS) */
+/* ========================================== */
+
+@media (max-width: 768px) {
+    /* 1. Altera a estrutura principal do painel para empilhar em vez de ficar lado a lado */
+    #dashboard { 
+        flex-direction: column; 
+        height: auto;
+        min-height: 100vh;
+    }
+
+    /* 2. Oculta a Sidebar ou transforma ela em um menu de topo */
+    .sidebar { 
+        width: 100%; 
+        height: auto; 
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    /* 3. Ajusta o espaço do menu para caber na tela pequena */
+    .logo-area-sidebar {
+        padding: 15px;
+        justify-content: center;
+    }
+
+    /* 4. Transforma o menu em abas (Side by side no topo) */
+    .sidebar-menu {
+        display: flex;
+        overflow-x: auto; /* Permite rolar o menu para o lado se houver muitos botões */
+        white-space: nowrap;
+        padding-bottom: 5px;
+    }
+    
+    .menu-item {
+        padding: 10px 15px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .menu-item:hover, .menu-item.active { 
+        border-left: none;
+        border-bottom: 3px solid var(--primary); 
+    }
+
+    /* 5. Dá espaço para o conteúdo principal respirar */
+    .main-content { 
+        padding: 20px 15px; 
+    }
+
+    .header-dash {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    /* 6. Ajusta os painéis e inputs */
+    .section-panel {
+        padding: 20px 15px;
+    }
+
+    .row-inputs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* 7. Ajusta a tabela de catálogos */
+    .item-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .item-nome, .item-preco {
+        width: 100%;
+        text-align: left;
+    }
+    
+    .btn-remove {
+        align-self: flex-end;
+        margin-top: -35px;
+        margin-right: 10px;
+    }
+}
