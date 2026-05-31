@@ -3,49 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área do Cliente | Supreme-Tech</title>
-    <link rel="stylesheet" href="supremestyle.css">
+    <title>Painel de Controle | Supreme-Tech</title>
+    <link rel="icon" href="logost.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="supremestyle.css?v=3.0">
 </head>
 <body>
 
+    <!-- TELA DE LOGIN COM FUNDO HIGH-TECH -->
     <div id="login-screen">
+        <div id="led-background">
+            <div class="led-line" style="left: 20%;"><div class="led-light" style="animation-delay: 1s; animation-duration: 3s;"></div></div>
+            <div class="led-line" style="left: 50%;"><div class="led-light gold" style="animation-delay: 0s; animation-duration: 4s;"></div></div>
+            <div class="led-line" style="left: 80%;"><div class="led-light" style="animation-delay: 2s; animation-duration: 2.5s;"></div></div>
+        </div>
+
         <div class="login-box">
-            <img src="somente o logo.jpg" alt="Supreme-Tech Logo" class="logo-login">
-            <h2>Bem-vindo</h2>
-            <p>Acesse o seu painel de gestão</p>
+            <img src="somente o logo.jpg" alt="Supreme-Tech Logo" class="logo-login" onerror="this.style.display='none'">
+            <h2>Sistema Central</h2>
+            <p>Autenticação de Acesso Restrito</p>
             <div class="error-msg" id="login-error">Credenciais inválidas!</div>
-            <form id="login-form">
-                <input type="email" id="email" class="form-control" placeholder="E-mail da Empresa" required>
-                <input type="password" id="senha" class="form-control" placeholder="Senha" required>
-                <button type="submit" class="btn btn-primary">Entrar no Painel</button>
-            </form>
             
-            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="email" class="form-control" placeholder="E-mail Corporativo" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="senha" class="form-control" placeholder="Senha de Acesso" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Iniciar Sessão Segura</button>
+            </form>
         </div>
     </div>
 
+    <!-- DASHBOARD PRINCIPAL -->
     <div id="dashboard">
         <div class="sidebar">
             <div class="logo-area-sidebar">
-                <img src="somente o logo.jpg" alt="Logo" class="logo-sidebar">
+                <img src="somente o logo.jpg" alt="Logo" class="logo-sidebar" onerror="this.style.display='none'">
                 <span>Supreme-Tech</span>
             </div>
             
-            <p class="menu-tag">MENU PRINCIPAL</p>
-            <div class="menu-item visible active" onclick="navegar('sec-dashboard', this)" data-menu="todos">📊 Dashboard</div>
-            <div class="menu-item visible" onclick="navegar('sec-textos', this)" data-menu="todos">📝 Personalizar Robô</div>
+            <p class="menu-tag">INTELIGÊNCIA</p>
+            <div class="menu-item visible active" onclick="navegar('sec-dashboard', this)" data-menu="todos">
+                <i>◈</i> Dashboard Integrado
+            </div>
+            <div class="menu-item visible" onclick="navegar('sec-textos', this)" data-menu="todos">
+                <i>◈</i> Personalizar IA
+            </div>
             
-            <p class="menu-tag">GESTÃO DO NEGÓCIO</p>
-            <div class="menu-item" onclick="navegar('sec-clinica', this)" data-menu="clinica">🩺 Consultas & Horários</div>
-            <div class="menu-item" onclick="navegar('sec-restaurante', this)" data-menu="restaurante">🍔 Cardápio & Taxas</div>
-            <div class="menu-item" onclick="navegar('sec-petshop', this)" data-menu="petshop">🐶 Serviços Pet & Loja</div>
-            <div class="menu-item" onclick="navegar('sec-loja', this)" data-menu="loja">🛍️ Catálogo da Loja</div>
+            <p class="menu-tag">ECOSSISTEMA</p>
+            <div class="menu-item" onclick="navegar('sec-clinica', this)" data-menu="clinica"><i>◈</i> Consultas & Horários</div>
+            <div class="menu-item" onclick="navegar('sec-restaurante', this)" data-menu="restaurante"><i>◈</i> Cardápio & Taxas</div>
+            <div class="menu-item" onclick="navegar('sec-petshop', this)" data-menu="petshop"><i>◈</i> Serviços Pet & Loja</div>
+            <div class="menu-item" onclick="navegar('sec-loja', this)" data-menu="loja"><i>◈</i> Catálogo da Loja</div>
 
-            <p class="menu-tag">AJUDA</p>
-            <div class="menu-item visible" onclick="navegar('sec-contato', this)" data-menu="todos">💬 Fale Conosco</div>
+            <p class="menu-tag">SISTEMA</p>
+            <div class="menu-item visible" onclick="navegar('sec-contato', this)" data-menu="todos"><i>◈</i> Central de Suporte</div>
             <div class="menu-item visible" data-menu="todos" onclick="abrirModalSenhaCliente()">
-            <span class="icon">🔒</span> Alterar Senha
-    </div>
+                <span style="color: var(--accent);">🔒</span> Trocar Credencial
+            </div>
         </div>
 
         <div class="main-content">
@@ -54,23 +70,23 @@
                     <h1 id="nome-empresa">Carregando...</h1>
                     <span id="badge-plano" class="badge">Plano</span>
                 </div>
-                <button class="btn btn-logout" onclick="fazerLogout()">Sair</button>
+                <button class="btn btn-logout" onclick="fazerLogout()">Desconectar</button>
             </div>
 
+            <!-- SEÇÕES -->
             <div id="sec-dashboard" class="section-panel active">
                 <h2>Relatórios de Desempenho</h2>
                 
                 <div id="dash-bloqueado" class="upsell-box">
-                    <img src="somente o logo.jpg" alt="Logo" class="logo-upsell">
                     <h3>🔒 Dashboard Personalizado Bloqueado</h3>
-                    <p>O seu painel de gráficos em tempo real precisa ser construído sob medida para a sua operação. Entre em contato com o nosso suporte para projetarmos o seu Dashboard ideal e fazer o upgrade para o plano <b>SUPREME ELITE</b>.</p>
-                    <button class="btn btn-upgrade" onclick="abrirWhatsAppSuporte()">Solicitar Criação do Dashboard</button>
+                    <p>O seu painel de gráficos em tempo real precisa ser construído sob medida para a sua operação. Entre em contato com a nossa engenharia para projetarmos a sua estrutura e fazer o upgrade para o plano <b>SUPREME ELITE</b>.</p>
+                    <button class="btn btn-primary" style="width: auto; padding: 12px 30px;" onclick="abrirWhatsAppSuporte()">Solicitar Implantação</button>
                 </div>
 
                 <div id="dash-liberado" style="display: none;">
-                    <p>Métricas de atendimento dos últimos 7 dias:</p>
+                    <p style="color: var(--text-muted);">Métricas de atendimento da última janela (7 dias):</p>
                     <div class="grafico-simulado">
-                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico" style="width: 100%; max-width: 600px; border-radius: 8px; filter: invert(1) hue-rotate(180deg);">
+                        <img src="https://developers.google.com/static/chart/interactive/images/line_chart.png" alt="Gráfico" style="width: 100%; max-width: 600px; border-radius: 8px; filter: invert(1) hue-rotate(180deg) brightness(1.5);">
                     </div>
                 </div>
             </div>
@@ -81,12 +97,12 @@
                     
                     <div class="emergency-panel">
                         <div class="emergency-text">
-                            <h3>Controle de Funcionamento</h3>
-                            <p>Desative o atendimento automático caso precise fechar mais cedo, em feriados ou durante imprevistos.</p>
+                            <h3>Controle de Funcionamento Central (Kill Switch)</h3>
+                            <p>Desative o atendimento automático instantaneamente em caso de imprevistos ou emergências operacionais.</p>
                         </div>
                         <div class="emergency-toggle">
                             <label class="switch-container">
-                                <span class="switch-label">DESATIVAR CHATBOT</span>
+                                <span class="switch-label">STATUS DO ROBÔ</span>
                                 <label class="switch">
                                     <input type="checkbox" name="bot_desativado" id="toggle-bot">
                                     <span class="slider round"></span>
@@ -96,28 +112,28 @@
                     </div>
 
                     <div class="input-group">
-                        <label>Mensagem de Ausência (Enviada quando o robô estiver desativado)</label>
-                        <textarea name="msg_ausencia" placeholder="Ex: Olá! No momento não estamos atendendo devido a um imprevisto/feriado. Retornaremos em breve!"></textarea>
+                        <label>Mensagem de Contingência (Enviada quando o robô estiver desativado)</label>
+                        <textarea name="msg_ausencia" placeholder="Ex: Olá! No momento não estamos atendendo devido a um imprevisto. Retornaremos em breve!"></textarea>
                     </div>
 
-                    <hr style="border-color: #333; margin: 30px 0;">
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 30px 0;">
 
-                    <h3>Personalidade do Atendimento</h3>
+                    <h3>Personalidade da IA</h3>
                     <div class="input-group">
-                        <label>Mensagem de Saudação (Início da conversa)</label>
+                        <label>Mensagem de Saudação Inicial</label>
                         <textarea name="msg_saudacao" placeholder="Ex: Olá! Bem-vindo(a). Como posso ajudar você hoje?"></textarea>
                     </div>
                     <div class="input-group">
-                        <label>Mensagem de Erro (Quando o cliente digita algo que o robô não entende)</label>
+                        <label>Mensagem de Tratamento de Erro (Fallback)</label>
                         <input type="text" name="msg_erro" placeholder="Ex: Desculpe, não entendi. Por favor, digite apenas o número da opção desejada.">
                     </div>
                     <div class="input-group">
-                        <label>Mensagem de Finalização (Despedida)</label>
+                        <label>Mensagem de Finalização de Ciclo</label>
                         <textarea name="msg_finalizacao" placeholder="Ex: Agradecemos o contato! Qualquer dúvida, estamos à disposição."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Salvar Personalizações</button>
-                    <div class="aviso-sucesso">✅ Alterações salvas! O robô já foi atualizado.</div>
+                    <button type="submit" class="btn btn-primary">Sincronizar com Nuvem</button>
+                    <div class="aviso-sucesso">✅ Sincronização concluída! A IA foi atualizada.</div>
                 </form>
             </div>
             
@@ -125,10 +141,10 @@
                 <h2>Gestão da Clínica</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
-                        <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
-                        <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
+                        <div class="input-group" style="flex:1"><label>Abertura de Sistema:</label><input type="time" name="hora_abre"></div>
+                        <div class="input-group" style="flex:1"><label>Encerramento:</label><input type="time" name="hora_fecha"></div>
                     </div>
-                    <hr style="border-color: #333; margin: 20px 0;">
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
                     
                     <div class="catalogo-header">
                         <h3>Consultas e Exames</h3>
@@ -137,8 +153,8 @@
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
                     
-                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Clínica</button>
-                    <div class="aviso-sucesso">✅ Clínica atualizada!</div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Servidor</button>
+                    <div class="aviso-sucesso">✅ Estrutura atualizada com sucesso!</div>
                 </form>
             </div>
 
@@ -146,10 +162,10 @@
                 <h2>Gestão de Delivery</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
-                        <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
-                        <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
+                        <div class="input-group" style="flex:1"><label>Abertura de Sistema:</label><input type="time" name="hora_abre"></div>
+                        <div class="input-group" style="flex:1"><label>Encerramento:</label><input type="time" name="hora_fecha"></div>
                     </div>
-                    <hr style="border-color: #333; margin: 20px 0;">
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
                     
                     <div class="input-group"><label>Valor da Taxa de Entrega por KM (R$)</label><input type="number" step="0.01" name="taxa_km" placeholder="Ex: 1.50"></div>
                     
@@ -160,19 +176,19 @@
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
                     
-                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Delivery</button>
-                    <div class="aviso-sucesso">✅ Delivery atualizado!</div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Servidor</button>
+                    <div class="aviso-sucesso">✅ Cardápio sincronizado!</div>
                 </form>
             </div>
 
             <div id="sec-petshop" class="section-panel">
-                <h2>Gestão Pet & Clínica Veterinária</h2>
+                <h2>Gestão Pet & Clínica</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
-                        <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
-                        <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
+                        <div class="input-group" style="flex:1"><label>Abertura de Sistema:</label><input type="time" name="hora_abre"></div>
+                        <div class="input-group" style="flex:1"><label>Encerramento:</label><input type="time" name="hora_fecha"></div>
                     </div>
-                    <hr style="border-color: #333; margin: 20px 0;">
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
                     
                     <div class="input-group"><label>Valor Banho e Tosa (R$)</label><input type="number" step="0.01" name="valor_banho" placeholder="Ex: 50.00"></div>
                     
@@ -183,8 +199,8 @@
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
                     
-                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Pet Shop</button>
-                    <div class="aviso-sucesso">✅ Pet Shop atualizado!</div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Servidor</button>
+                    <div class="aviso-sucesso">✅ Banco de dados atualizado!</div>
                 </form>
             </div>
 
@@ -192,12 +208,12 @@
                 <h2>Catálogo de Produtos</h2>
                 <form onsubmit="salvarConfiguracoes(event)">
                     <div class="row-inputs">
-                        <div class="input-group" style="flex:1"><label>Abre às:</label><input type="time" name="hora_abre"></div>
-                        <div class="input-group" style="flex:1"><label>Fecha às:</label><input type="time" name="hora_fecha"></div>
+                        <div class="input-group" style="flex:1"><label>Abertura de Sistema:</label><input type="time" name="hora_abre"></div>
+                        <div class="input-group" style="flex:1"><label>Encerramento:</label><input type="time" name="hora_fecha"></div>
                     </div>
-                    <hr style="border-color: #333; margin: 20px 0;">
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
                     
-                    <div class="input-group"><label>Chave PIX da Loja</label><input type="text" name="chave_pix" placeholder="Sua chave PIX para pagamentos automáticos"></div>
+                    <div class="input-group"><label>Chave PIX de Faturamento</label><input type="text" name="chave_pix" placeholder="Sua chave PIX para pagamentos automáticos"></div>
                     
                     <div class="catalogo-header">
                         <h3>Categorias e Produtos</h3>
@@ -206,58 +222,61 @@
                     <div class="categorias-wrapper"></div>
                     <input type="hidden" name="catalogo_json" class="catalogo-json-output">
                     
-                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Loja</button>
-                    <div class="aviso-sucesso">✅ Loja atualizada!</div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">Atualizar Servidor</button>
+                    <div class="aviso-sucesso">✅ Loja sincronizada com a nuvem!</div>
                 </form>
             </div>
 
             <div id="sec-contato" class="section-panel">
                 <h2>Central de Suporte Supreme-Tech</h2>
-                <p>Precisa de ajuda ou deseja fazer um upgrade no seu plano? Fale diretamente com a nossa equipe.</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Precisa de suporte na arquitetura do seu robô ou deseja fazer um upgrade? Fale diretamente com o nosso time de operações.</p>
                 
                 <div style="margin-bottom: 30px;">
-                    <button class="btn btn-whatsapp" onclick="abrirWhatsAppSuporte()">
-                        <span style="font-size: 1.2rem;">📱</span> Chamar no WhatsApp Agora
+                    <button type="button" class="btn btn-whatsapp" onclick="abrirWhatsAppSuporte()">
+                        <span style="font-size: 1.2rem;">📱</span> Acionar Operador via WhatsApp
                     </button>
                 </div>
 
-                <hr style="border: 1px solid #333; margin-bottom: 20px;">
+                <hr style="border-color: rgba(255,255,255,0.05); margin-bottom: 20px;">
 
-                <p>Ou envie um chamado interno:</p>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Ou abra um ticket interno no sistema:</p>
                 <form onsubmit="enviarContato(event)">
                     <div class="input-group">
-                        <label>Assunto</label>
+                        <label>Classificação do Chamado</label>
                         <select name="assunto" class="form-control">
-                            <option>Dúvida Técnica</option>
-                            <option>Alteração Avançada</option>
-                            <option>Upgrade de Plano</option>
+                            <option>Dúvida Técnica / Bug</option>
+                            <option>Alteração de Fluxo Lógico</option>
+                            <option>Upgrade de Infraestrutura</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>Sua Mensagem</label>
-                        <textarea name="mensagem_suporte" placeholder="Como podemos ajudar?"></textarea>
+                        <label>Descrição do Requisito</label>
+                        <textarea name="mensagem_suporte" placeholder="Detalhe sua necessidade para nossa engenharia..." style="height: 120px;"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Enviar Chamado</button>
-                    <div class="aviso-sucesso">✅ Chamado aberto com sucesso!</div>
+                    <button type="submit" class="btn btn-primary">Transmitir Ticket</button>
+                    <div class="aviso-sucesso">✅ Chamado registrado no sistema! Retornaremos em breve.</div>
                 </form>
             </div>
 
         </div>
     </div>
-    <div id="modal-senha-cliente" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
-        <div style="background: #1e1e24; border: 1px solid #333; border-radius: 8px; width: 90%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <button type="button" onclick="fecharModalSenhaCliente()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer;">✖</button>
+
+    <!-- MODAL DE SENHA -->
+    <div id="modal-senha-cliente" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 16, 30, 0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
+        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; width: 90%; max-width: 400px; padding: 40px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+            <button type="button" onclick="fecharModalSenhaCliente()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; transition: 0.3s;">✖</button>
             
-            <h3 style="color: var(--primary); margin-bottom: 10px;">🔒 Alterar Senha</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Digite sua nova senha de acesso abaixo.</p>
+            <h3 style="color: var(--text-light); margin-bottom: 10px; font-family: 'Montserrat', sans-serif;">Alteração de <span style="color: var(--accent);">Credencial</span></h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">Defina uma nova chave de acesso segura.</p>
             
-            <form onsubmit="alterarMinhaSenha(event)" style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="text" id="nova-senha-input" class="form-control" placeholder="Sua nova senha" required minlength="4">
-                <button type="submit" class="btn-salvar" style="width: 100%;">Confirmar e Salvar</button>
+            <form onsubmit="alterarMinhaSenha(event)" style="display: flex; flex-direction: column; gap: 20px;">
+                <input type="text" id="nova-senha-input" class="form-control" placeholder="Sua nova senha de acesso" required minlength="4">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Credencial</button>
             </form>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supremejava.js"></script>
+    <script src="supremejava.js?v=3.0"></script>
 </body>
 </html>
